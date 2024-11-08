@@ -1,39 +1,162 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://Sprites/HUD/Prototyping phase.png" type="Texture" id=1]
+[ext_resource path="res://Sprites/HUD/DPGS_Rate.png" type="Texture" id=1]
 [ext_resource path="res://Themes/main_theme.tres" type="Theme" id=2]
 [ext_resource path="res://Scenes/HUD/PhaseStep.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Sprites/HUD/next stage.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/HUD/PhaseHUD.gd" type="Script" id=5]
 [ext_resource path="res://Tools/auto_size_label.gd" type="Script" id=6]
+[ext_resource path="res://Sprites/HUD/phase_square.png" type="Texture" id=7]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
-[node name="PhaseHUD" type="Control"]
-margin_right = 232.0
-margin_bottom = 62.0
-rect_pivot_offset = Vector2( -96, -38 )
+[node name="PhaseHUD" type="MarginContainer"]
+rect_min_size = Vector2( 240, 80 )
 theme = ExtResource( 2 )
+custom_constants/margin_right = 2
+custom_constants/margin_top = 8
+custom_constants/margin_left = 2
+custom_constants/margin_bottom = 8
 script = ExtResource( 5 )
 
-[node name="Phase" type="Sprite" parent="."]
-position = Vector2( 116, 31 )
+[node name="Phase" type="NinePatchRect" parent="."]
+margin_left = 2.0
+margin_top = 8.0
+margin_right = 238.0
+margin_bottom = 72.0
 texture = ExtResource( 1 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 8
 
-[node name="PhaseTitle" type="Label" parent="."]
+[node name="Margin" type="MarginContainer" parent="."]
+margin_left = 2.0
+margin_top = 8.0
+margin_right = 238.0
+margin_bottom = 72.0
+custom_constants/margin_right = 8
+custom_constants/margin_top = 4
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
+
+[node name="Control" type="Control" parent="Margin"]
+margin_left = 8.0
+margin_top = 4.0
+margin_right = 228.0
+margin_bottom = 56.0
+
+[node name="PhaseTitle" type="Label" parent="Margin/Control"]
 anchor_right = 1.0
-anchor_bottom = 1.0
-margin_bottom = -30.0
+anchor_bottom = 0.5
 theme_type_variation = "LabelBold"
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "DPG status application"
 align = 1
-valign = 2
+valign = 1
 autowrap = true
 script = ExtResource( 6 )
 padding = 20
 
+[node name="MarginContainer" type="MarginContainer" parent="Margin/Control"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_top = 5
+custom_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Margin/Control/MarginContainer"]
+margin_top = 5.0
+margin_right = 220.0
+margin_bottom = 21.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_constants/separation = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Margin/Control/MarginContainer/HBoxContainer"]
+margin_left = 12.0
+margin_right = 32.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 20, 16 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 7 )
+
+[node name="TextureRect2" type="TextureRect" parent="Margin/Control/MarginContainer/HBoxContainer"]
+margin_left = 34.0
+margin_right = 54.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 20, 16 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 7 )
+
+[node name="TextureRect3" type="TextureRect" parent="Margin/Control/MarginContainer/HBoxContainer"]
+margin_left = 56.0
+margin_right = 76.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 20, 16 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 7 )
+
+[node name="TextureRect4" type="TextureRect" parent="Margin/Control/MarginContainer/HBoxContainer"]
+margin_left = 78.0
+margin_right = 98.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 20, 16 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 7 )
+
+[node name="TextureRect5" type="TextureRect" parent="Margin/Control/MarginContainer/HBoxContainer"]
+margin_left = 100.0
+margin_right = 120.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 20, 16 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 7 )
+
+[node name="TextureRect6" type="TextureRect" parent="Margin/Control/MarginContainer/HBoxContainer"]
+margin_left = 122.0
+margin_right = 142.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 20, 16 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 7 )
+
+[node name="TextureRect7" type="TextureRect" parent="Margin/Control/MarginContainer/HBoxContainer"]
+margin_left = 144.0
+margin_right = 164.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 20, 16 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 7 )
+
+[node name="TextureRect8" type="TextureRect" parent="Margin/Control/MarginContainer/HBoxContainer"]
+margin_left = 166.0
+margin_right = 186.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 20, 16 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 7 )
+
+[node name="TextureRect9" type="TextureRect" parent="Margin/Control/MarginContainer/HBoxContainer"]
+margin_left = 188.0
+margin_right = 208.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 20, 16 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 7 )
+
 [node name="Steps" type="Node2D" parent="."]
+visible = false
 
 [node name="PhaseStep1" parent="Steps" instance=ExtResource( 3 )]
 position = Vector2( 28, 42 )
@@ -74,6 +197,8 @@ margin_left = -116.0
 margin_top = -31.0
 margin_right = -116.0
 margin_bottom = -31.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
 custom_styles/focus = SubResource( 1 )
 flat = true
 

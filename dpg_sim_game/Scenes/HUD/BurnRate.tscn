@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/HUD/StatHUD.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Sprites/HUD/human_icon.png" type="Texture" id=2]
+
+[node name="BurnRate" instance=ExtResource( 1 )]
+
+[node name="TextureRect" parent="Margin/Control" index="0"]
+texture = ExtResource( 2 )
+
+[node name="Label" parent="Margin/Control" index="1"]
+text = "Rate"
