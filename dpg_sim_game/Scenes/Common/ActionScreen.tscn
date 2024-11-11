@@ -4,43 +4,51 @@
 [ext_resource path="res://Scenes/Common/ActionScreen.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/Buttons/MM_Button.tscn" type="PackedScene" id=3]
 
-[node name="ActionScreen" type="Control"]
-margin_right = 640.0
-margin_bottom = 640.0
+[node name="ActionScreen" type="CanvasLayer"]
 script = ExtResource( 2 )
 
-[node name="ActionOption1" parent="." instance=ExtResource( 1 )]
-margin_left = 109.0
-margin_top = 133.0
-margin_right = 531.0
-margin_bottom = 229.0
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
 
-[node name="ActionOption2" parent="." instance=ExtResource( 1 )]
-margin_left = 109.0
-margin_top = 238.0
-margin_right = 531.0
-margin_bottom = 334.0
+[node name="Control" type="Control" parent="CenterContainer"]
+margin_left = 320.0
+margin_top = 320.0
+margin_right = 320.0
+margin_bottom = 320.0
+
+[node name="ActionOption1" parent="CenterContainer/Control" instance=ExtResource( 1 )]
+margin_left = -211.0
+margin_top = -187.0
+margin_right = 211.0
+margin_bottom = -91.0
+
+[node name="ActionOption2" parent="CenterContainer/Control" instance=ExtResource( 1 )]
+margin_left = -211.0
+margin_top = -82.0
+margin_right = 211.0
+margin_bottom = 14.0
 index = 1
 
-[node name="ActionOption3" parent="." instance=ExtResource( 1 )]
-margin_left = 109.0
-margin_top = 342.0
-margin_right = 531.0
-margin_bottom = 438.0
+[node name="ActionOption3" parent="CenterContainer/Control" instance=ExtResource( 1 )]
+margin_left = -211.0
+margin_top = 22.0
+margin_right = 211.0
+margin_bottom = 118.0
 index = 2
 
-[node name="ActionOption4" parent="." instance=ExtResource( 1 )]
-margin_left = 109.0
-margin_top = 447.0
-margin_right = 531.0
-margin_bottom = 543.0
+[node name="ActionOption4" parent="CenterContainer/Control" instance=ExtResource( 1 )]
+margin_left = -211.0
+margin_top = 127.0
+margin_right = 211.0
+margin_bottom = 223.0
 index = 3
 
-[node name="Back_Button" parent="." instance=ExtResource( 3 )]
-margin_left = 153.0
-margin_top = 555.0
-margin_right = 488.0
-margin_bottom = 623.0
+[node name="Back_Button" parent="CenterContainer/Control" instance=ExtResource( 3 )]
+margin_left = -167.0
+margin_top = 235.0
+margin_right = 168.0
+margin_bottom = 303.0
 buttonText = "BACK"
 
-[connection signal="buttonPressed" from="Back_Button" to="." method="_on_Back_Button_buttonPressed"]
+[connection signal="buttonPressed" from="CenterContainer/Control/Back_Button" to="." method="_on_Back_Button_buttonPressed"]
