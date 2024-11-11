@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 var scenarioPrefab = preload("res://Scenes/ScenarioSelection/ScenarioOption.tscn")
 onready var buttonsParent = $ScenarioList/ScrollContainer/VBoxContainer

@@ -1,4 +1,4 @@
-extends Control
+extends Node
 
 export var numProjects = 4
 onready var projectOptions = [$ProjectOption1, $ProjectOption2, $ProjectOption3, $ProjectOption4]
