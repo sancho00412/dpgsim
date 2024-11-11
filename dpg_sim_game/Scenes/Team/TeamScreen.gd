@@ -1,6 +1,18 @@
 extends Node
 
-onready var allTeams = [$Management,$Development,$Design,$Product,$Marketing,$QA,$Support]
+# Dependencies
+onready var allTeams = [
+	$CenterContainer/Control/Management,
+	$CenterContainer/Control/Development,
+	$CenterContainer/Control/Design,
+	$CenterContainer/Control/Product,
+	$CenterContainer/Control/Marketing,
+	$CenterContainer/Control/QA,
+	$CenterContainer/Control/Support
+]
+onready var back_button = $CenterContainer/Control/Back_Button
+onready var team_size = $CenterContainer/Control/TeamSize
+
 var teamLimit = 5
 var teamSize = 0
 var team : Dictionary = {
@@ -20,7 +32,7 @@ func Start():
 		team[key] = 0
 	team["Management"] = 1
 	
-	$Back_Button.Start()
+	back_button.Start()
 	UpdateTeamSizeLabel()
 	for worker in allTeams:
 		worker.Start()
@@ -102,7 +114,7 @@ func _on_Back_Button_buttonPressed():
 	global.game.OpenTeamScreen(false)
 
 func UpdateTeamSizeLabel():
-	$TeamSize.text = trans.local("TEAM_SIZE") + ": " + str(teamSize) + "/" + str(teamLimit)
+	team_size.text = trans.local("TEAM_SIZE") + ": " + str(teamSize) + "/" + str(teamLimit)
 
 func ManagerLNfunc(value):
 	return round(LNfunc(value)*3+2)

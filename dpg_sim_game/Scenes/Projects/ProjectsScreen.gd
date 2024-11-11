@@ -1,7 +1,14 @@
 extends Node
 
 export var numProjects = 4
-onready var projectOptions = [$ProjectOption1, $ProjectOption2, $ProjectOption3, $ProjectOption4]
+
+# Dependencies
+onready var projectOptions = [
+	$CenterContainer/Options/ProjectOption1,
+	$CenterContainer/Options/ProjectOption2, 
+	$CenterContainer/Options/ProjectOption3, 
+	$CenterContainer/Options/ProjectOption4
+]
 
 func Start():
 	var randInds = []

@@ -4,21 +4,35 @@ var rng = RandomNumberGenerator.new()
 func _ready():
 	rng.randomize()
 
-onready var counters = [$FitCounter, $DevCounter, $MarketCounter]
+# Dependencies
+onready var counters = {
+	"Fit": $CenterContainerTop/Control/FitCounter, 
+	"Dev": $CenterContainerTop/Control/DevCounter, 
+	"Market": $CenterContainerTop/Control/MarketCounter
+}
+onready var office = $CenterContainerMiddle/Control/Office
+onready var team_button = $CenterContainerMiddle/Control/Team_Button
+onready var actions_button = $CenterContainerMiddle/Control/Actions_Button
+onready var project_button = $CenterContainerMiddle/Control/Project_Button
+onready var project_progress = $CenterContainerMiddle/Control/ProjectProgress
+onready var project_progress_label = $CenterContainerMiddle/Control/ProjectProgress/ProjectProgressLabel
+onready var action_progress = $CenterContainerMiddle/Control/ActionProgress
+onready var action_progress_label = $CenterContainerMiddle/Control/ActionProgress/ActionProgressLabel
+
 var PGR = 0.0
 var NPR = 0.0
 var PGR_limit = 0.0
 var NPR_limit = 0.0
 func Start():
-	$Office.Start()
-	$Team_Button.Start()
-	$Actions_Button.Start()
-	$Project_Button.Start()
-	$Project_Button.StartShaking()
+	office.Start()
+	team_button.Start()
+	actions_button.Start()
+	project_button.Start()
+	project_button.StartShaking()
 	
-	$FitCounter/Label.text = trans.local("FIT_PTS")
-	$DevCounter/Label.text = trans.local("DEV_PTS")
-	$MarketCounter/Label.text = trans.local("MARKET_PTS")
+	counters["Fit"].LocalizeText("FIT_PTS")
+	counters["Dev"].LocalizeText("DEV_PTS")
+	counters["Market"].LocalizeText("MARKET_PTS")
 	
 	PGR = float(global.mainConfig["PGR"])
 	NPR = float(global.mainConfig["NPR"])
@@ -26,14 +40,14 @@ func Start():
 	NPR_limit = float(global.mainConfig["NPR_limit"])
 
 func FirstStart():
-	$Team_Button.visible = false
-	$ProjectProgress.visible = false
-	$Actions_Button.visible = false
-	$Project_Button.visible = true
-	$Office.ResetOffice()
+	team_button.visible = false
+	project_progress.visible = false
+	actions_button.visible = false
+	project_button.visible = true
+	office.ResetOffice()
 
 func StartProject():
-	$Team_Button.visible = global.curPhaseIndex > 1
+	team_button.visible = global.curPhaseIndex > 1
 	if global.curPhaseIndex == 2:
 		global.game.PauseTimer(true)
 		global.game.gameTooltip.closeIsProceed = true
@@ -41,10 +55,10 @@ func StartProject():
 			trans.local("TEAM_POPUP_TITLE"),
 			trans.local("TEAM_POPUP_DESC"),
 			funcref(self, "Unpause"))
-		$Team_Button.StartShaking()
-		$Team_Button.stopShakingOnPress = true
+		team_button.StartShaking()
+		team_button.stopShakingOnPress = true
 	
-	$Actions_Button.visible = global.curPhaseIndex > 2
+	actions_button.visible = global.curPhaseIndex > 2
 	if global.curPhaseIndex == 3:
 		global.game.PauseTimer(true)
 		global.game.gameTooltip.closeIsProceed = true
@@ -52,28 +66,28 @@ func StartProject():
 			trans.local("ACTIONS_POPUP_TITLE"),
 			trans.local("ACTIONS_POPUP_DESC"),
 			funcref(self, "Unpause"))
-		$Actions_Button.StartShaking()
-		$Actions_Button.stopShakingOnPress = true
+		actions_button.StartShaking()
+		actions_button.stopShakingOnPress = true
 	
-	$Project_Button.visible = false
-	$ProjectProgress.visible = true
+	project_button.visible = false
+	project_progress.visible = true
 	curDays = 0
 	SetProjectProgress()
-	$Office.StartProject()
-	$FitCounter.present = global.mainConfig["Phases"][global.curPhaseIndex]["Fit"]
-	$DevCounter.present = global.mainConfig["Phases"][global.curPhaseIndex]["Dev"]
-	$MarketCounter.present = global.mainConfig["Phases"][global.curPhaseIndex]["Market"]
-	for counter in counters:
+	office.StartProject()
+	counters["Fit"].present = global.mainConfig["Phases"][global.curPhaseIndex]["Fit"]
+	counters["Dev"].present = global.mainConfig["Phases"][global.curPhaseIndex]["Dev"]
+	counters["Market"].present = global.mainConfig["Phases"][global.curPhaseIndex]["Market"]
+	for counter in counters.values():
 		counter.Start()
 
 func GenPoints():
 	for i in range(counters.size()):
-		if counters[i].present:
+		if counters.values()[i].present:
 			if global.actionsActive[i]:
-				if counters[i].bad > 0:
-					CleanNegativePoint(counters[i], i)
+				if counters.values()[i].bad > 0:
+					CleanNegativePoint(counters.values()[i], i)
 			else:
-				GenOnePoint(counters[i], i)
+				GenOnePoint(counters.values()[i], i)
 
 func GenOnePoint(counter : PointCounter, ind : int):
 	var pBonus : float = global.GetInsight(ind, true)
@@ -90,7 +104,7 @@ func GenOnePoint(counter : PointCounter, ind : int):
 			var negRandom = rng.randf_range(1, 100)
 			var isGood = negRandom > negChance
 			#print("NPR:", NPR + nBonus, " clamped NPR:", negChance, " random number:", negRandom)
-			$Office.EnqueuePoint(counter, isGood)
+			office.EnqueuePoint(counter, isGood)
 		else:
 			remainder = 0
 
@@ -102,32 +116,32 @@ func CleanNegativePoint(counter : PointCounter, ind : int):
 		#print(counter.name, " | random number:", pointChance, " PGR:", remainder, " clamped PGR: ", temp_PGR)
 		if pointChance <= temp_PGR:
 			remainder -= temp_PGR
-			$Office.EnqueueClean(counter)
+			office.EnqueueClean(counter)
 		else:
 			remainder = 0
 
 func ResetCounters():
-	for counter in counters:
+	for counter in counters.values():
 		counter.Reset()
 
 func SetProjectProgress():
-	$ProjectProgress.value = float(curDays) / float(global.curProject["TimeCost"]) * 100.0
-	$ProjectProgress/ProjectProgressLabel.text = str(curDays) + "/" + global.curProject["TimeCost"]
+	project_progress.value = float(curDays) / float(global.curProject["TimeCost"]) * 100.0
+	project_progress_label.text = str(curDays) + "/" + global.curProject["TimeCost"]
 	if curDays == int(global.curProject["TimeCost"]):
-		$ProjectProgress.visible = false
-		$Project_Button.visible = true
+		project_progress.visible = false
+		project_button.visible = true
 
 func SetActionProgress(i):
-	$ActionProgress.value = float(actionDays) / float(global.actions[i]["TimeCost"]) * 100.0
-	$ActionProgress/ActionProgressLabel.text = str(actionDays) + "/" + str(global.actions[i]["TimeCost"])
+	action_progress.value = float(actionDays) / float(global.actions[i]["TimeCost"]) * 100.0
+	action_progress_label.text = str(actionDays) + "/" + str(global.actions[i]["TimeCost"])
 	if actionDays == int(global.actions[i]["TimeCost"]):
 		global.actionsActive[0] = false
 		global.actionsActive[1] = false
 		global.actionsActive[2] = false
 		actionDays = 0
-		$ActionProgress.visible = false
-		$Actions_Button.visible = true
-		$Project_Button.visible = curDays >= int(global.curProject["TimeCost"])
+		action_progress.visible = false
+		actions_button.visible = true
+		project_button.visible = curDays >= int(global.curProject["TimeCost"])
 
 var curDays = 0
 var actionDays = 0
@@ -151,9 +165,9 @@ func CheckTime():
 	else:
 		if index < 0: # all actions are active
 			index = 3
-		$ActionProgress.visible = true
-		$Actions_Button.visible = false
-		$Project_Button.visible = false
+		action_progress.visible = true
+		actions_button.visible = false
+		project_button.visible = false
 		actionDays += 1
 		SetActionProgress(index)
 
@@ -165,7 +179,7 @@ func _on_Actions_Button_buttonPressed():
 	global.game.OpenActionScreen(true)
 
 func _on_Project_Button_buttonPressed():
-	$Project_Button.visible = false
+	project_button.visible = false
 	global.game.ProjectComplete()
 
 func Unpause():

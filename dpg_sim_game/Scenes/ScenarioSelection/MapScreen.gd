@@ -1,12 +1,16 @@
 extends Node
 
 var scenarioPrefab = preload("res://Scenes/ScenarioSelection/ScenarioOption.tscn")
-onready var buttonsParent = $ScenarioList/ScrollContainer/VBoxContainer
+
+onready var buttonsParent = $CenterContainer/ScenarioList/ScrollContainer/VBoxContainer
+onready var backButton = $CenterContainer/ScenarioList/Back_Button
+onready var startButton = $CenterContainer/ScenarioList/Start_Button
+
 var buttonsList = []
 
 func Start():
-	$ScenarioList/Back_Button.Start()
-	$ScenarioList/Start_Button.Start()
+	backButton.Start()
+	startButton.Start()
 	_on_Back_Button_buttonPressed()
 	for regionInd in range(7):
 		for i in range(global.scenarios.size()):
@@ -27,7 +31,7 @@ func OpenScenarioList(region):
 
 func SelectScenario(var scenarioIndex):
 	global.activeScenarioIndex = scenarioIndex
-	$ScenarioList/Start_Button.visible = true
+	startButton.visible = true
 	for button in buttonsList:
 		button.Select(false)
 
@@ -36,7 +40,7 @@ func SelectScenario(var scenarioIndex):
 func _on_Back_Button_buttonPressed():
 	$Map.visible = true
 	$ScenarioList.visible = false
-	$ScenarioList/Start_Button.visible = false
+	startButton.visible = false
 	$ScenarioList/ScrollContainer.scroll_vertical = 0
 	for i in range(buttonsParent.get_child_count()):
 		buttonsParent.get_child(i).queue_free()
