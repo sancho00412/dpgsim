@@ -23,10 +23,12 @@ custom_constants/separation = 0
 [node name="Money" parent="HUD Left" instance=ExtResource( 5 )]
 margin_left = 100.0
 margin_right = 200.0
+rect_min_size = Vector2( 100, 80 )
 
 [node name="BurnRate" parent="HUD Left" instance=ExtResource( 2 )]
 margin_left = 200.0
 margin_right = 300.0
+rect_min_size = Vector2( 100, 80 )
 
 [node name="HUD Right" type="HBoxContainer" parent="."]
 margin_right = 640.0
@@ -35,8 +37,14 @@ custom_constants/separation = 0
 alignment = 2
 
 [node name="PhaseHUD" parent="HUD Right" instance=ExtResource( 4 )]
-margin_left = 400.0
-margin_right = 640.0
+margin_left = 336.0
+margin_right = 576.0
 margin_bottom = 80.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
+
+[node name="EmptySpace" type="CenterContainer" parent="HUD Right"]
+margin_left = 576.0
+margin_right = 640.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 64, 0 )
