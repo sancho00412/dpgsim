@@ -6,12 +6,14 @@ onready var gameTooltip = $Tooltip
 onready var dateCounter = $MainSession/Header/HudLeft/DateCounter
 onready var teamScreen = $TeamScreen
 onready var soundManager = $Sounds
+onready var money = $Header/MoneySystem
+onready var phase_hud = $Header/HudRight/PhaseHUD
 
 func _ready():
 	global.game = self
 
-	# yield($WebInterface.ConnectToWeb(), "completed")
-	# yield($WebInterface.LoadFiles(), "completed")
+	yield($WebInterface.ConnectToWeb(), "completed")
+	yield($WebInterface.LoadFiles(), "completed")
 		
 	$MainMenu.visible = true
 	$MainMenu.Start()
@@ -24,10 +26,10 @@ func StartScenario():
 	$MapScreen.visible = false
 	global.curPhaseIndex = 0
 	$Header.Start()
-	$Header/Money.SetMoney(global.curScenario()["Money"])
-	$Header/PhaseHUD.StartPhase()
+	money.SetMoney(global.curScenario()["Money"])
+	phase_hud.StartPhase()
 	$Header.visible = true
-	$TeamScreen.Start()
+	teamScreen.Start()
 	$MainSession.Start()
 	$MainSession.ResetCounters()
 	$MainSession.FirstStart()
@@ -36,14 +38,14 @@ func StartScenario():
 	gameTooltip.SetTooltip(trans.local("SCENARIO_POPUP_TITLE"), trans.local("SCENARIO_POPUP_DESC"), null)
 
 func StartNextPhase():
-	$Header/PhaseHUD.StartPhase()
+	phase_hud.StartPhase()
 	$Projects.Start()
 	yield(get_tree().create_timer(0.1),"timeout")
 	$Projects.visible = true
 
 func StartProject():
 	$Projects.visible = false
-	$TeamScreen.UpdateAvailableWorkers()
+	teamScreen.UpdateAvailableWorkers()
 	PauseTimer(false)
 	$Header.StartProject()
 	$ActionScreen.Start()
@@ -57,7 +59,7 @@ func ProjectComplete():
 		return
 	PauseTimer(true)
 	global.ApplyInsights()
-	$Header/PhaseHUD.ShowButton(false)
+	phase_hud.ShowButton(false)
 	if global.curPhaseIndex == 1:
 		##################################################
 		# print("name your product")
@@ -83,7 +85,7 @@ func PauseTimer(pause):
 func GameOver():
 	PauseTimer(true)
 	$MainSession/Office.ClearQueue()
-	$Header/PhaseHUD.ShowButton(false)
+	phase_hud.ShowButton(false)
 	gameTooltip.closeIsProceed = true
 	var callback = funcref(self, "ExitGame")
 	gameTooltip.SetTooltip(trans.local("GAME_OVER"), trans.local("GAME_OVER_DESCR"), callback)
@@ -107,7 +109,7 @@ func CalcScores():
 	else:
 		if $Header.totalDays < 672:
 			points += (672 - $Header.totalDays) * 3
-	points += $Header/Money.total * 5
+	points += money.total * 5
 	return points
 
 
@@ -134,7 +136,7 @@ func PauseGame(pause):
 func ExitGame():
 	PauseTimer(true)
 	global.ResetGame()
-	$Header/PhaseHUD.ResetPhases()
+	phase_hud.ResetPhases()
 	for child in get_children():
 		if !(child is CanvasItem):
 			continue
@@ -143,15 +145,15 @@ func ExitGame():
 	$MainMenu.visible = true
 
 func HireWorker(quantity):
-	$Header/Money.AddBurn(int(global.mainConfig["Salary"]) * quantity)
+	money.AddBurn(int(global.mainConfig["Salary"]) * quantity)
 	$MainSession/Office.UpdateMinis()
 
 func OpenTeamScreen(open):
 	PauseTimer(open)
-	$TeamScreen.visible = open
+	teamScreen.visible = open
 	$MainSession.visible = not open
 	if not open:
-		$Header/Money.SetMaxBurn()
+		money.SetMaxBurn()
 
 func OpenActionScreen(open):
 	PauseTimer(open)
@@ -159,10 +161,10 @@ func OpenActionScreen(open):
 	$MainSession.visible = not open
 	
 func Overtime():
-	$Header/PhaseHUD.OverTime()
+	phase_hud.OverTime()
 
 func CheckEvents(day):
 	$EventManager.CheckEvents(day)
 
 func AddMoney(amount):
-	$Header/Money.AddMoney(amount)
+	money.AddMoney(amount)

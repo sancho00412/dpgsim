@@ -9,6 +9,7 @@ onready var startButton = $CenterContainer/ScenarioList/Start_Button
 onready var map = $CenterContainer/MapSprite
 onready var scenario_list = $CenterContainer/ScenarioList
 onready var scenario_list_scroll = $CenterContainer/ScenarioList/ScrollContainer
+onready var map_regions = $CenterContainer/MapSprite/Control.get_children()
 
 var buttonsList = []
 
@@ -20,6 +21,7 @@ func Start():
 		for i in range(global.scenarios.size()):
 			if (global.scenarios[i]["MapRegion"] == regionInd):
 				global.regionsActive[regionInd] = true
+				map_regions[regionInd].connect("on_map_region_pressed", self, "OpenScenarioList")
 				break
 	global.game.gameTooltip.SetTooltip(trans.local("MAP_POPUP_TITLE"), trans.local("MAP_POPUP_DESC"), null)
 
@@ -32,6 +34,7 @@ func OpenScenarioList(region):
 			buttonsParent.add_child(newButton)
 			newButton.InitScenarioButton(i)
 			buttonsList.append(newButton)
+			newButton.connect("on_scenario_pressed", self, "SelectScenario")
 
 func SelectScenario(var scenarioIndex):
 	global.activeScenarioIndex = scenarioIndex
@@ -47,6 +50,7 @@ func _on_Back_Button_buttonPressed():
 	startButton.visible = false
 	scenario_list_scroll.scroll_vertical = 0
 	for i in range(buttonsParent.get_child_count()):
+		buttonsParent.get_child(i).disconnect("on_scenario_pressed", self, "SelectScenario")
 		buttonsParent.get_child(i).queue_free()
 		buttonsList.clear()
 

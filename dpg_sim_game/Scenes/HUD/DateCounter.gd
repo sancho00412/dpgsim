@@ -1,5 +1,8 @@
 extends Control
 
+# Depenencies
+onready var date = $Margin/Control/Date
+
 var timerOn = false
 var dayDuration = 1
 var day = 0
@@ -40,11 +43,11 @@ func UpdateDate():
 			year += 1
 
 func UpdateText():
-	#$Date.text = trans.local("DATE") + ":\n"
-	$Date.text = ""
+	#date.text = trans.local("DATE") + ":\n"
+	date.text = ""
 	if day < 10:
-		$Date.text += "0"
-	$Date.text += str(day) + "."
+		date.text += "0"
+	date.text += str(day) + "."
 	if month < 10:
-		$Date.text += "0"
-	$Date.text += str(month) + "." + str(year)
+		date.text += "0"
+	date.text += str(month) + "." + str(year)

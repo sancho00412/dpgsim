@@ -3,6 +3,8 @@ extends Button
 export var regionIndex = 0
 var blinking = true
 
+signal on_map_region_pressed(region_index)
+
 func _ready():
 	modulate.a = 0
 
@@ -21,7 +23,8 @@ func _on_MapRegion_pressed():
 		return
 	modulate.a = 0
 	global.game.soundManager.PlaySFX("Boop")
-	get_parent().get_parent().get_parent().OpenScenarioList(regionIndex)
+	emit_signal("on_map_region_pressed", regionIndex)
+	# get_parent().get_parent().get_parent().OpenScenarioList(regionIndex)
 
 
 func _on_Button_mouse_entered():
