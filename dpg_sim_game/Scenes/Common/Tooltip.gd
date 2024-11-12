@@ -1,13 +1,18 @@
 class_name GameTooltip
 extends CanvasLayer
 
+# Dependencies
+onready var title = $CenterContainer/Control/TooltipWindow/Title
+onready var body = $CenterContainer/Control/TooltipWindow/Body
+onready var mm_button = $CenterContainer/Control/TooltipWindow/MM_Button
+
 var callback
 var closeIsProceed = false
 
-func SetTooltip(title, body, _callback):
-	$Title.text = title
-	$Body.text = body
-	$MM_Button.Start()
+func SetTooltip(titleText, bodyText, _callback):
+	title.text = titleText
+	body.text = bodyText
+	mm_button.Start()
 	callback = _callback
 	visible = true
 
