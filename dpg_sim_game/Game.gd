@@ -33,6 +33,7 @@ func StartScenario():
 	global.curPhaseIndex = 0
 	header.Start()
 	header.money.SetMoney(global.curScenario()["Money"])
+	header.phase_hud.ShowButton(false)
 	header.phase_hud.StartPhase()
 	header.visible = true
 	teamScreen.Start()
