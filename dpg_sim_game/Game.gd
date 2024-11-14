@@ -166,6 +166,7 @@ func OpenActionScreen(open):
 	PauseTimer(open)
 	$ActionScreen.visible = open
 	main_session.visible = not open
+	header.visible = not open
 	
 func Overtime():
 	header.phase_hud.OverTime()
